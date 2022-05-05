@@ -184,11 +184,6 @@ export class ActionRequest {
 
     const url = this.scheduledPlan && this.scheduledPlan.downloadUrl
 
-    console.log('*'.repeat(30))
-    console.log(`The scheduled plan download URL is ${url}`)
-    console.log('*'.repeat(30))
-
-
     const streamPromise = new Promise<void>((resolve, reject) => {
       if (url) {
         winston.info(`[stream] beginning stream via download url`, this.logInfo)
@@ -218,9 +213,6 @@ export class ActionRequest {
             winston.info(`[stream] streaming via download url aborted`, this.logInfo)
           })
           .on("response", (resp) => {
-            console.log('RESPONSE BODY RESPONSE BODY')
-            console.log(resp.statusCode)
-            console.log(resp.body)
             winston.info(`[stream] got response from download url`, this.logInfo)
           })
           .on("close", () => {
@@ -258,13 +250,6 @@ export class ActionRequest {
     })
 
     const results = await Promise.all([returnPromise, streamPromise])
-
-    // PUGGA
-    console.log('*'.repeat(30))
-    console.log('RESULTS RESULTS RESULTS')
-    console.log('*'.repeat(30))
-    console.log(results)
-
     return results[0]
   }
 

@@ -105,12 +105,6 @@ export class SegmentAction extends Hub.Action {
           }
         },
         onRow: (row) => {
-          // PUGGA
-          console.log('*'.repeat(30))
-          console.log('ROW')
-          console.log('*'.repeat(30))
-          console.log(row)
-
           this.unassignedSegmentFieldsCheck(segmentFields)
           const payload = {
             ...this.prepareSegmentTraitsFromRow(
@@ -125,16 +119,10 @@ export class SegmentAction extends Hub.Action {
             delete payload.event
           }
 
-          // PUGGA
-          console.log('*'.repeat(30))
-          console.log('PAYLOAD')
-          console.log('*'.repeat(30))
-          console.log(payload)
-
           try {
             segmentClient[segmentCall](payload)
           } catch (e) {
-            errors.push(e)
+            errors.push(e as Error)
           }
         },
       })
@@ -149,7 +137,7 @@ export class SegmentAction extends Hub.Action {
         })
       })
     } catch (e) {
-      errors.push(e)
+      errors.push(e as Error)
     }
 
     if (errors.length > 0) {
@@ -253,18 +241,6 @@ export class SegmentAction extends Hub.Action {
             values[field.name] = row[field.name].value
           } else {
             values = this.filterJson(row[field.name], segmentFields, field.name)
-
-            // PUGGA
-            console.log('*'.repeat(30))
-            console.log('ELSE VALUES ELSE VALUES')
-            console.log('*'.repeat(30))
-            console.log(values)
-            console.log(row[field.name])
-            console.log(segmentFields)
-            console.log(field.name)
-            console.log('*'.repeat(30))
-            console.log('*'.repeat(30))
-            console.log('*'.repeat(30))
           }
           for (const key in values) {
             if (values.hasOwnProperty(key)) {

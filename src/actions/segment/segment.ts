@@ -105,6 +105,11 @@ export class SegmentAction extends Hub.Action {
           }
         },
         onRow: (row) => {
+          // PUGGA
+          console.log('*'.repeat(30))
+          console.log('ROW')
+          console.log('*'.repeat(30))
+          console.log(row)
           this.unassignedSegmentFieldsCheck(segmentFields)
           const payload = {
             ...this.prepareSegmentTraitsFromRow(
@@ -118,6 +123,12 @@ export class SegmentAction extends Hub.Action {
           if (!payload.event) {
             delete payload.event
           }
+
+          // PUGGA
+          console.log('*'.repeat(30))
+          console.log('PAYLOAD')
+          console.log('*'.repeat(30))
+          console.log(payload)
 
           try {
             segmentClient[segmentCall](payload)

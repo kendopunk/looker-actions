@@ -81,7 +81,7 @@ export class ActionRequest {
     const actionRequest = new ActionRequest()
     Object.assign(actionRequest, json)
     if (actionRequest.attachment && actionRequest.attachment.dataBuffer) {
-        actionRequest.attachment.dataBuffer = Buffer.from(json.attachment.dataBuffer)
+      actionRequest.attachment.dataBuffer = Buffer.from(json.attachment.dataBuffer)
     }
     return actionRequest
   }
@@ -178,9 +178,9 @@ export class ActionRequest {
     const stream = new PassThrough()
     const returnPromise = callback(stream)
     const timeout = process.env.ACTION_HUB_STREAM_REQUEST_TIMEOUT ?
-        parseInt(process.env.ACTION_HUB_STREAM_REQUEST_TIMEOUT, 10)
+      parseInt(process.env.ACTION_HUB_STREAM_REQUEST_TIMEOUT, 10)
       :
-        13 * 60 * 1000
+      13 * 60 * 1000
 
     const url = this.scheduledPlan && this.scheduledPlan.downloadUrl
 
@@ -189,7 +189,7 @@ export class ActionRequest {
         winston.info(`[stream] beginning stream via download url`, this.logInfo)
         let hasResolved = false
         httpRequest
-          .get(url, {timeout})
+          .get(url, { timeout })
           .on("error", (err) => {
             if (hasResolved && (err as any).code === "ECONNRESET") {
               winston.info(`[stream] ignoring ECONNRESET that occured after streaming finished`, this.logInfo)
@@ -250,6 +250,12 @@ export class ActionRequest {
     })
 
     const results = await Promise.all([returnPromise, streamPromise])
+
+    // PUGGA
+    console.log('*'.repeat(30))
+    console.log('RESULTS RESULTS RESULTS')
+    console.log(results)
+    console.log('*'.repeat(30))
     return results[0]
   }
 
@@ -277,15 +283,15 @@ export class ActionRequest {
             onRow(row)
           }))
           .done(() => {
-            winston.info(`[streamJson] oboe reports done`, {...this.logInfo, rows})
+            winston.info(`[streamJson] oboe reports done`, { ...this.logInfo, rows })
           })
       }).then(() => {
-        winston.info(`[streamJson] complete`, {...this.logInfo, rows})
+        winston.info(`[streamJson] complete`, { ...this.logInfo, rows })
         resolve()
       }).catch((error) => {
         // This error should not be logged as it could come from an action
         // which might decide to include user information in the error message
-        winston.info(`[streamJson] reported an error`, {...this.logInfo, rows})
+        winston.info(`[streamJson] reported an error`, { ...this.logInfo, rows })
         reject(error)
       })
     })
@@ -335,15 +341,15 @@ export class ActionRequest {
             }
           }))
           .done(() => {
-            winston.info(`[streamJsonDetail] oboe reports done`, {...this.logInfo, rows})
+            winston.info(`[streamJsonDetail] oboe reports done`, { ...this.logInfo, rows })
           })
       }).then(() => {
-        winston.info(`[streamJsonDetail] complete`, {...this.logInfo, rows})
+        winston.info(`[streamJsonDetail] complete`, { ...this.logInfo, rows })
         resolve()
       }).catch((error) => {
         // This error should not be logged as it could come from an action
         // which might decide to include user information in the error message
-        winston.info(`[streamJsonDetail] reported an error`, {...this.logInfo, rows})
+        winston.info(`[streamJsonDetail] reported an error`, { ...this.logInfo, rows })
         reject(error)
       })
     })
@@ -387,7 +393,7 @@ export class ActionRequest {
    * @param {number} maxLines - maximum number of lines to truncate message
    * @param {number} maxCharacters - maximum character to truncate
    */
-  suggestedTruncatedMessage(maxLines: number, maxCharacters: number)  {
+  suggestedTruncatedMessage(maxLines: number, maxCharacters: number) {
     if (this.attachment && this.attachment.dataBuffer) {
       let title = ""
       let url = ""
@@ -403,9 +409,9 @@ export class ActionRequest {
       }
 
       const truncatedLines = this.attachment.dataBuffer
-          .toString("utf8")
-          .split("\n")
-          .slice(0, maxLines)
+        .toString("utf8")
+        .split("\n")
+        .slice(0, maxLines)
       if (truncatedLines.length === maxLines) {
         truncatedLines.push("")
       }
@@ -418,7 +424,7 @@ export class ActionRequest {
   }
 
   private get logInfo() {
-    return {webhookId: this.webhookId}
+    return { webhookId: this.webhookId }
   }
 
   private safeOboe(
@@ -427,7 +433,7 @@ export class ActionRequest {
     callback: (node: any) => void,
   ) {
     const logInfo = this.logInfo
-    return function(this: oboe.Oboe, node: any) {
+    return function (this: oboe.Oboe, node: any) {
       try {
         callback(node)
         return oboe.drop

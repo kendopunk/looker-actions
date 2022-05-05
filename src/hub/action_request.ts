@@ -212,7 +212,7 @@ export class ActionRequest {
           .on("abort", () => {
             winston.info(`[stream] streaming via download url aborted`, this.logInfo)
           })
-          .on("response", (resp) => {
+          .on("response", () => {
             winston.info(`[stream] got response from download url`, this.logInfo)
           })
           .on("close", () => {

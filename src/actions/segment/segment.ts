@@ -99,7 +99,9 @@ export class SegmentAction extends Hub.Action {
     console.log(request.formParams)
     console.log('*'.repeat(30))
 
-    const event = request.formParams.event
+    // PUGGA
+    // const event = request.formParams.event
+    const event = request?.formParams?.event || {}
 
     try {
 

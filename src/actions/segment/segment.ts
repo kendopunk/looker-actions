@@ -63,17 +63,11 @@ export class SegmentAction extends Hub.Action {
   }
 
   async execute(request: Hub.ActionRequest) {
-    const foo = this.executeSegment(request, SegmentCalls.Identify)
-    // PUGGA
-    console.log(foo)
     return this.executeSegment(request, SegmentCalls.Identify)
   }
 
   protected async executeSegment(request: Hub.ActionRequest, segmentCall: SegmentCalls) {
     const segmentClient = this.segmentClientFromRequest(request)
-
-    // PUGGA
-    console.log(JSON.stringify(request))
 
     let hiddenFields: string[] = []
     if (request.scheduledPlan &&
@@ -94,14 +88,8 @@ export class SegmentAction extends Hub.Action {
         version: process.env.APP_VERSION ? process.env.APP_VERSION : "dev",
       },
     }
-    // PUGGA
-    console.log('*'.repeat(30))
-    console.log(request.formParams)
-    console.log('*'.repeat(30))
 
-    // PUGGA
-    // const event = request.formParams.event
-    const event = request?.formParams?.event || {}
+    const event = request.formParams.event
 
     try {
 
@@ -120,8 +108,8 @@ export class SegmentAction extends Hub.Action {
           // PUGGA
           console.log('*'.repeat(30))
           console.log('ROW')
-          console.log(row)
           console.log('*'.repeat(30))
+          console.log(row)
 
           this.unassignedSegmentFieldsCheck(segmentFields)
           const payload = {
@@ -140,8 +128,9 @@ export class SegmentAction extends Hub.Action {
           // PUGGA
           console.log('*'.repeat(30))
           console.log('PAYLOAD')
-          console.log(payload)
           console.log('*'.repeat(30))
+          console.log(payload)
+
           try {
             segmentClient[segmentCall](payload)
           } catch (e) {
@@ -160,35 +149,17 @@ export class SegmentAction extends Hub.Action {
         })
       })
     } catch (e) {
-      // PUGGA
-      console.log('*'.repeat(30))
-      console.log('ERRORS IN catch on line 160')
-      console.log('*'.repeat(30))
-      console.log(e)
       errors.push(e)
     }
 
     if (errors.length > 0) {
-      // PUGGA
-      console.log('*'.repeat(30))
-      console.log('WE HAVE SOME ERRORS')
-      console.log('*'.repeat(30))
       let msg = errors.map((e) => e.message ? e.message : e).join(", ")
       if (msg.length === 0) {
         msg = "An unknown error occurred while processing the Segment action."
         winston.warn(`Can't format Segment errors: ${util.inspect(errors)}`)
       }
-      // PUGGA
-      console.log('*'.repeat(30))
-      console.log('ERROR MESSAGE')
-      console.log(msg)
-      console.log('*'.repeat(30))
       return new Hub.ActionResponse({ success: false, message: msg })
     } else {
-      // PUGGA
-      console.log('*'.repeat(30))
-      console.log('return new Hub.ActionResponse()')
-      console.log('*'.repeat(30))
       return new Hub.ActionResponse({ success: true })
     }
   }
@@ -265,23 +236,6 @@ export class SegmentAction extends Hub.Action {
   ) {
     const traits: { [key: string]: string } = {}
 
-    // PUGGA
-    console.log('*'.repeat(30))
-    console.log('FIELDS FIELDS FIELDS')
-    console.log(fields)
-    console.log('*'.repeat(30))
-
-    console.log('*'.repeat(30))
-    console.log('SEGMENT FIELDS SEGMENT FIELDS')
-    console.log(segmentFields)
-    console.log('*'.repeat(30))
-
-
-
-
-
-
-
     for (const field of fields) {
       if (segmentFields.idFieldNames.indexOf(field.name) === -1) {
         if (hiddenFields.indexOf(field.name) === -1) {
@@ -294,6 +248,12 @@ export class SegmentAction extends Hub.Action {
             values[field.name] = row[field.name].value
           } else {
             values = this.filterJson(row[field.name], segmentFields, field.name)
+
+            // PUGGA
+            console.log('*'.repeat(30))
+            console.log('ELSE VALUES ELSE VALUES')
+            console.log('*'.repeat(30))
+            console.log(values)
           }
           for (const key in values) {
             if (values.hasOwnProperty(key)) {

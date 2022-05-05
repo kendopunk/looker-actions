@@ -218,8 +218,9 @@ export class ActionRequest {
             winston.info(`[stream] streaming via download url aborted`, this.logInfo)
           })
           .on("response", (resp) => {
-            console.log('RESPONSE RESPONSE RESPONSE')
-            console.log(resp)
+            console.log('RESPONSE BODY RESPONSE BODY')
+            console.log(resp.statusCode)
+            console.log(resp.body)
             winston.info(`[stream] got response from download url`, this.logInfo)
           })
           .on("close", () => {

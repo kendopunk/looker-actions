@@ -101,7 +101,7 @@ export class SegmentAction extends Hub.Action {
 
     // PUGGA
     // const event = request.formParams.event
-    const event = request?.formParams?.event || {}
+    const event = request?.formParams?.event || 'event'
 
     try {
 
@@ -264,6 +264,24 @@ export class SegmentAction extends Hub.Action {
     groupCall: boolean,
   ) {
     const traits: { [key: string]: string } = {}
+
+    // PUGGA
+    console.log('*'.repeat(30))
+    console.log('FIELDS FIELDS FIELDS')
+    console.log(fields)
+    console.log('*'.repeat(30))
+
+    console.log('*'.repeat(30))
+    console.log('SEGMENT FIELDS SEGMENT FIELDS')
+    console.log(segmentFields)
+    console.log('*'.repeat(30))
+
+
+
+
+
+
+
     for (const field of fields) {
       if (segmentFields.idFieldNames.indexOf(field.name) === -1) {
         if (hiddenFields.indexOf(field.name) === -1) {

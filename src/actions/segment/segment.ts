@@ -69,6 +69,7 @@ export class SegmentAction extends Hub.Action {
   protected async executeSegment(request: Hub.ActionRequest, segmentCall: SegmentCalls) {
     const segmentClient = this.segmentClientFromRequest(request)
 
+    // PUGGA
     console.log(JSON.stringify(request))
 
     let hiddenFields: string[] = []
@@ -119,6 +120,10 @@ export class SegmentAction extends Hub.Action {
           if (!payload.event) {
             delete payload.event
           }
+
+          console.log('*'.repeat(30))
+          console.log(payload)
+          console.log('*'.repeat(30))
           try {
             segmentClient[segmentCall](payload)
           } catch (e) {

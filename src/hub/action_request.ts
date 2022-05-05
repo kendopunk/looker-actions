@@ -262,8 +262,9 @@ export class ActionRequest {
     // PUGGA
     console.log('*'.repeat(30))
     console.log('RESULTS RESULTS RESULTS')
-    console.log(results)
     console.log('*'.repeat(30))
+    console.log(results)
+
     return results[0]
   }
 

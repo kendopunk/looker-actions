@@ -254,6 +254,12 @@ export class SegmentAction extends Hub.Action {
             console.log('ELSE VALUES ELSE VALUES')
             console.log('*'.repeat(30))
             console.log(values)
+            console.log(row[field.name])
+            console.log(segmentFields)
+            console.log(field.name)
+            console.log('*'.repeat(30))
+            console.log('*'.repeat(30))
+            console.log('*'.repeat(30))
           }
           for (const key in values) {
             if (values.hasOwnProperty(key)) {

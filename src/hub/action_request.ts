@@ -184,6 +184,11 @@ export class ActionRequest {
 
     const url = this.scheduledPlan && this.scheduledPlan.downloadUrl
 
+    console.log('*'.repeat(30))
+    console.log(`The scheduled plan download URL is ${url}`)
+    console.log('*'.repeat(30))
+
+
     const streamPromise = new Promise<void>((resolve, reject) => {
       if (url) {
         winston.info(`[stream] beginning stream via download url`, this.logInfo)

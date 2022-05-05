@@ -154,11 +154,20 @@ export class SegmentAction extends Hub.Action {
     }
 
     if (errors.length > 0) {
+      // PUGGA
+      console.log('*'.repeat(30))
+      console.log('WE HAVE SOME ERRORS')
+      console.log('*'.repeat(30))
       let msg = errors.map((e) => e.message ? e.message : e).join(", ")
       if (msg.length === 0) {
         msg = "An unknown error occurred while processing the Segment action."
         winston.warn(`Can't format Segment errors: ${util.inspect(errors)}`)
       }
+      // PUGGA
+      console.log('*'.repeat(30))
+      console.log('ERROR MESSAGE')
+      console.log(msg)
+      console.log('*'.repeat(30))
       return new Hub.ActionResponse({ success: false, message: msg })
     } else {
       return new Hub.ActionResponse({ success: true })

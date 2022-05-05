@@ -91,6 +91,11 @@ export class SegmentAction extends Hub.Action {
         version: process.env.APP_VERSION ? process.env.APP_VERSION : "dev",
       },
     }
+    // PUGGA
+    console.log('*'.repeat(30))
+    console.log(request.formParams)
+    console.log('*'.repeat(30))
+
     const event = request.formParams.event
 
     try {
@@ -150,6 +155,11 @@ export class SegmentAction extends Hub.Action {
         })
       })
     } catch (e) {
+      // PUGGA
+      console.log('*'.repeat(30))
+      console.log('ERRORS IN catch on line 160')
+      console.log('*'.repeat(30))
+      console.log(e)
       errors.push(e)
     }
 
@@ -170,6 +180,10 @@ export class SegmentAction extends Hub.Action {
       console.log('*'.repeat(30))
       return new Hub.ActionResponse({ success: false, message: msg })
     } else {
+      // PUGGA
+      console.log('*'.repeat(30))
+      console.log('return new Hub.ActionResponse()')
+      console.log('*'.repeat(30))
       return new Hub.ActionResponse({ success: true })
     }
   }

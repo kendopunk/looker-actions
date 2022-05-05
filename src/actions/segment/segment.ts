@@ -63,6 +63,9 @@ export class SegmentAction extends Hub.Action {
   }
 
   async execute(request: Hub.ActionRequest) {
+    const foo = this.executeSegment(request, SegmentCalls.Identify)
+    // PUGGA
+    console.log(foo)
     return this.executeSegment(request, SegmentCalls.Identify)
   }
 

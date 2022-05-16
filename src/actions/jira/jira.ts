@@ -1,3 +1,96 @@
+/**
+ * src/actions/jira/jira.ts
+ */
+import * as winston from "winston"
+
+import * as Hub from "../../hub"
+
+export class JiraAction extends Hub.OAuthAction {
+  readonly name = "jira_create_issue"
+  readonly url = "/execute"
+  readonly label = "JIRA"
+  readonly iconName = "jira/jira.png"
+  readonly description = "Create a JIRA issue referencing data."
+  readonly params = []
+  readonly supportedActionTypes = [Hub.ActionType.Query, Hub.ActionType.Dashboard]
+  readonly requiredFields = []
+  readonly usesOAuth = true
+  readonly usesStreaming = false
+  readonly minimumSupportedLookerVersion = "6.8.0"
+
+  readonly oauthClientId: string
+  readonly oauthClientSecret: string
+  readonly oauthScope = "read:jira-user read:jira-work write:jira-work offline_access"
+
+  constructor(oauthClientId: string, oauthClientSecret: string) {
+    super()
+    this.oauthClientId = oauthClientId
+    this.oauthClientSecret = oauthClientSecret
+  }
+
+  async execute(request: Hub.ActionRequest) {
+    // tslint:disable-next-line: no-console
+    console.log(JSON.stringify(request))
+
+    const resp = new Hub.ActionResponse()
+    return resp
+  }
+
+  /*
+  // async execute(request: Hub.ActionRequest) {
+  //   const filename = this.dropboxFilename(request)
+  //   const directory = request.formParams.directory
+  //   const ext = request.attachment!.fileExtension
+
+  //   let accessToken = ""
+  //   if (request.params.state_json) {
+  //     const stateJson = JSON.parse(request.params.state_json)
+  //     if (stateJson.code && stateJson.redirect) {
+  //       accessToken = await this.getAccessTokenFromCode(stateJson)
+  //     }
+  //   }
+  //   const drop = this.dropboxClientFromRequest(request, accessToken)
+
+  //   const resp = new Hub.ActionResponse()
+  //   resp.success = true
+  //   if (request.attachment && request.attachment.dataBuffer) {
+  //     const fileBuf = request.attachment.dataBuffer
+  //     const path = (directory === "__root") ? `/${filename}.${ext}` : `/${directory}/${filename}.${ext}`
+  //     await drop.filesUpload({path: `${path}`, contents: fileBuf}).catch((err: any) => {
+  //       winston.error(`Upload unsuccessful: ${JSON.stringify(err)}`)
+  //       resp.success = false
+  //       resp.state = new Hub.ActionState()
+  //       resp.state.data = "reset"
+  //     })
+  //   } else {
+  //     resp.success = false
+  //     resp.message = "No data sent from Looker to be sent to Dropbox."
+  //   }
+  //   return resp
+  // }*/
+
+  async oauthCheck(_request: Hub.ActionRequest): Promise<boolean> {
+    throw new Error("Method not implemented.")
+  }
+
+  async oauthUrl(_redirectUri: string, _encryptedState: string): Promise<string> {
+    throw new Error("Method not implemented.")
+  }
+
+  async oauthFetchInfo(_urlParams: { [key: string]: string }, _redirectUri: string): Promise<void> {
+    throw new Error("Method not implemented.")
+  }
+}
+
+/******** Register with Hub if prereqs are satisfied ********/
+if (process.env.JIRA_CLIENT_ID && process.env.JIRA_CLIENT_SECRET) {
+  const jha = new JiraAction(process.env.JIRA_CLIENT_ID, process.env.JIRA_CLIENT_SECRET)
+  Hub.addAction(jha)
+} else {
+  winston.warn("Jira Issue Action not registered because required environment variables are missing.")
+}
+
+/*
 import * as Hub from "../../hub"
 
 import * as https from "request-promise-native"
@@ -214,3 +307,4 @@ export class JiraAction extends Hub.OAuthAction {
 if (process.env.JIRA_CLIENT_ID && process.env.JIRA_CLIENT_SECRET) {
   Hub.addAction(new JiraAction())
 }
+*/

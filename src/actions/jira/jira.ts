@@ -1,21 +1,23 @@
 /**
  * src/actions/jira/jira.ts
  */
-import * as Hub from "../../hub"
-
 import * as https from "request-promise-native"
 import * as winston from "winston"
+
+import * as Hub from "../../hub"
 
 import {Credentials, JiraClient} from "./jira_client"
 
 export class JiraAction extends Hub.OAuthAction {
   name = "jira_create_issue"
+  url = "/execute"
   label = "JIRA"
-  iconName = "jira/jira.svg"
+  iconName = "jira/jira.png"
   description = "Create a JIRA issue referencing data."
   params = []
   supportedActionTypes = [Hub.ActionType.Query, Hub.ActionType.Dashboard]
   requiredFields = []
+  usesOAuth = true
   usesStreaming = false
   minimumSupportedLookerVersion = "6.8.0"
 
@@ -146,9 +148,19 @@ export class JiraAction extends Hub.OAuthAction {
   }
 
   async oauthUrl(redirectUri: string, encryptedState: string) {
+    // tslint:disable-next-line: no-console
+    console.log(`oauthUrl() ${"*".repeat(30)}`)
     const client = await this.jiraClient(redirectUri)
     const scope = "read:jira-user read:jira-work write:jira-work offline_access"
-    return client.generateAuthUrl(encryptedState, scope)
+
+    const authUrl = client.generateAuthUrl(encryptedState, scope)
+
+    // tslint:disable-next-line: no-console
+    console.log(`${authUrl} ${"*".repeat(30)}`)
+
+    return authUrl
+
+    // return client.generateAuthUrl(encryptedState, scope)
   }
 
   async oauthFetchInfo(urlParams: { [key: string]: string }, redirectUri: string) {
